@@ -1,0 +1,73 @@
+<h3>Currency Converter</h3>
+
+<input type="number" min=0 @bind="fromValue"/>
+
+
+<select @bind="fromCurrency">
+    @foreach (var currency in currencies){
+        // it will show every option
+        // and when you select it
+        // then it and because its on the list
+        // then the expression will be true
+        // so the option will be selected
+        // selected i html needs a boolen value 
+        <option selected="@(currency==fromCurrency)">@currency </option>
+    }
+</select>
+
+
+<h4>@toValue</h4>
+<select @bind="toCurrency">
+    @foreach (var currency in currencies){
+
+        <option selected="@(currency==toCurrency)">@currency </option>
+    }
+</select>
+
+
+<button @onclick="convert">Convert </button>
+
+
+
+
+@code{
+    // make a list of currencies
+    // IEnumerable is a collection that it iterable
+
+
+    // this is how sting IEnumrable is declared
+    IEnumerable<string> currencies = new string[0];
+    decimal fromValue = 1; // init with 1
+    string fromCurrency;
+    decimal toValue; // just a field
+    string toCurrency;
+
+    // set the init from currency
+    // and tocurrency
+
+    protected override void OnInitialized(){
+        currencies = new string[]{"USD","CAD"};
+        fromCurrency = "USD";
+        toCurrency = "CAD";
+        convert();
+
+    
+    }
+
+    // now on click we start the function
+
+    decimal GetRate(){
+        if(fromCurrency==toCurrency)return 1;
+        if(fromCurrency=="USD") return 1.3M;
+        return .7M;
+    }
+
+    void convert(){
+        toValue = GetRate()*fromValue;
+    }
+
+    
+
+
+}
+
